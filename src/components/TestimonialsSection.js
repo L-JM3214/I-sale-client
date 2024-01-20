@@ -1,15 +1,37 @@
-// components/TestimonialsSection.js
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import '../App.css'; 
 
-import React from 'react';
+const TestimonialsSection = () => {
+  const [testimonials, setTestimonials] = useState([]);
 
-function TestimonialsSection() {
-  // original HTML for the testimonials section 
+  useEffect(() => {
+    // Fetch testimonials from Flask API
+    axios.get('your_flask_testimonials_endpoint')
+      .then(response => {
+        setTestimonials(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching testimonials:', error);
+      });
+  }, []);
 
   return (
-    <section className="section-testimonials">
-      {/* testimonials section content */}
+    <section className="section-testimonials section-t8 nav-arrow-a">
+      <div className="container">
+        {/* Your existing TestimonialsSection JSX */}
+        {testimonials.map(testimonial => (
+          <div key={testimonial.id} className="carousel-item-a swiper-slide">
+            <div className="testimonials-box">
+              {/* Testimonial content */}
+              <p>{testimonial.content}</p>
+            </div>
+          </div>
+        ))}
+        {/* End of Testimonial items */}
+      </div>
     </section>
   );
-}
+};
 
 export default TestimonialsSection;

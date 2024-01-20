@@ -1,34 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const PropertyCarousel = () => {
+  const [properties, setProperties] = useState([]);
+
+  useEffect(() => {
+    // Fetch property data from Flask API
+    axios.get('your_flask_api_endpoint')
+      .then(response => {
+        setProperties(response.data); // Assuming your API returns an array of property objects
+      })
+      .catch(error => {
+        console.error('Error fetching property data:', error);
+      });
+  }, []); // Empty dependency array ensures the effect runs only once on component mount
+
   return (
     <section className="section-property-carousel">
       <div className="container">
         <div className="property-carousel">
           {/* Carousel items go here */}
-          <div className="property-item">
-            <img src="property1.jpg" alt="Property 1" />
-            <div className="property-details">
-              <h3>Property 1</h3>
-              <p>Details about property 1.</p>
+          {properties.map(property => (
+            <div key={property.id} className="property-item">
+              <img src={property.image} alt={property.title} />
+              <div className="property-details">
+                <h3>{property.title}</h3>
+                <p>{property.description}</p>
+              </div>
             </div>
-          </div>
-
-          <div className="property-item">
-            <img src="property2.jpg" alt="Property 2" />
-            <div className="property-details">
-              <h3>Property 2</h3>
-              <p>Details about property 2.</p>
-            </div>
-          </div>
-
-          <div className="property-item">
-            <img src="property3.jpg" alt="Property 3" />
-            <div className="property-details">
-              <h3>Property 3</h3>
-              <p>Details about property 3.</p>
-            </div>
-          </div>
+          ))}
           {/* End of Carousel items */}
         </div>
       </div>
